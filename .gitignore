@@ -1,0 +1,59 @@
+# ==================================================
+# Mineru_2.6.6 精选源码同步配置
+# 策略：只同步手写的项目文件以及核心修改过的 mineru 库
+# ==================================================
+
+# 1. 默认忽略一切
+*
+
+# 2. 允许 Git 进入关键目录
+!*/
+
+# 3. 【核心白名单】只同步你最关心的部分
+# -- 根目录脚本和配置 --
+!/点击启动.bat
+!/mineru.json
+!/.gitignore
+!/README.md
+
+# -- 重点：只同步你修改过的 mineru 核心代码包 --
+!/PY310/
+/PY310/*
+!/PY310/Lib/
+/PY310/Lib/*
+!/PY310/Lib/site-packages/
+/PY310/Lib/site-packages/*
+# 关键：精准放行 mineru 文件夹及其内部所有子文件夹
+!/PY310/Lib/site-packages/mineru/**
+
+# 4. 【额外代码白名单】
+# 如果你以后想增加其他同步的库，可以加在下面，比如：
+# !/PY310/Lib/site-packages/另一个你修改过的库/**
+
+# 5. 【二进制黑名单】即便在 mineru 文件夹内，也要排除二进制文件
+*.exe
+*.dll
+*.pyd
+*.pyc
+*.pyo
+*.so
+*.bin
+*.pth
+*.onnx
+*.weights
+*.model
+*.cat
+*.msi
+*.zip
+*.7z
+*.rar
+*.gz
+*._pth
+
+# 6. 【黑名单清单】彻底排除无关大文件夹和缓存
+/resources/**
+/Gradio_Temp/**
+/output/**
+/.vscode/**
+**/__pycache__/**
+.ipynb_checkpoints/**
