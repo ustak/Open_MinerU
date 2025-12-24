@@ -1,46 +1,47 @@
 # MinerU 2.6.6 修改版同步项目
 
-本仓库包含对 MinerU 项目核心代码（`markdown_parser.py` 等）的优化和修改。由于项目运行环境（16GB+）过大，仓库仅同步了核心代码和配置文件。
+本项目是一个基于 **Python 嵌入式版本** 的一键启动包优化版。仓库仅同步核心源码和配置，不包含 16GB 的运行环境和模型权重。
 
-## 🚀 如何复现环境
+## 🚀 如何复现完整项目
 
-如果你要在新机器上恢复此项目，请按以下步骤操作：
+由于本项目使用嵌入式 Python 结构，复现时需要将代码“注入”到基础运行环境中。
 
-### 1. 准备基础环境
-建议使用 Python 3.10 或更高版本。
-```bash
-# 创建并激活环境（如果你不使用本项目自带的 PY310）
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-.\venv\Scripts\activate     # Windows
-```
+### 1. 获取基础运行环境
+你有两种方式恢复运行环境：
 
-### 2. 安装依赖
-```bash
-pip install -r requirements.txt
-```
+*   **方式 A（推荐）**：下载官方 MinerU 一键启动包，解压后将本仓库的所有文件直接覆盖进去。
+*   **方式 B（纯净版）**：下载 [Python 3.10 嵌入式版](https://www.python.org/downloads/windows/)，解压到 `PY310` 文件夹，并根据 `requirements.txt` 安装依赖。
 
-### 3. 下载模型权重 (ModelScope)
-本项目依赖以下模型，请从 ModelScope 下载并放置在对应目录下：
+### 2. 补全模型权重
+请下载以下模型并放置在 `resources` 对应的目录下：
 
-| 模型名称 | 存放路径 | 下载地址 |
-| :--- | :--- | :--- |
-| PDF-Extract-Kit | `resources/modelscope/hub/models/OpenDataLab/PDF-Extract-Kit-1___0` | [ModelScope](https://modelscope.cn/models/OpenDataLab/PDF-Extract-Kit) |
-| MinerU VLM | `resources/modelscope/hub/models/OpenDataLab/MinerU2___5-2509-1___2B` | [ModelScope](https://modelscope.cn/models/OpenDataLab/MinerU2.5) |
+| 模型名称 | 存放路径 |
+| :--- | :--- |
+| PDF-Extract-Kit | `resources/modelscope/hub/models/OpenDataLab/PDF-Extract-Kit-1___0` |
+| MinerU VLM | `resources/modelscope/hub/models/OpenDataLab/MinerU2___5-2509-1___2B` |
 
-> **注意**：请确保 `mineru.json` 中的 `models-dir` 路径与实际存放位置一致。
+> 具体的下载链接请参考 [ModelScope](https://modelscope.cn/organization/OpenDataLab)。
 
-### 4. 应用核心代码修改
-这是最关键的一步。由于本仓库追踪的是 `PY310/Lib/site-packages/mineru/` 下的代码，当你重新安装 mineru 库后，需要确保使用仓库中的文件覆盖掉 site-packages 里的同名文件。
+### 3. 一键启动
+环境和模型准备好后，直接双击根目录的：
+`点击启动.bat`
 
-如果你保持了本仓库的目录结构，可以直接运行项目。
+---
 
-## 📂 目录结构说明
-- `PY310/Lib/site-packages/mineru/`: 包含修改过的核心代码（如翻译、解析逻辑）。
-- `mineru.json`: 配置文件，包含 API Key 和 模型路径。
-- `点击启动.bat`: Windows 下的一键启动脚本。
-- `requirements.txt`: 完整的环境依赖清单。
+## 📂 仓库代码结构 (核心修改点)
 
-## 🛠️ 已知修改点
-- 修改了 `markdown_parser.py` 以解决翻译后的换行和格式问题。
-- 自定义了翻译占位符保护机制。
+本仓库的代码结构严格对应嵌入式路径，确保覆盖即生效：
+
+*   **`PY310/Lib/site-packages/mineru/`**: 包含我们修改过的核心源码（如翻译逻辑优化、公式保护、换行修复等）。
+*   **`mineru.json`**: 核心配置文件（已配置好模型本地路径）。
+*   **`点击启动.bat`**: 自动检测端口并启动 Gradio 服务的脚本。
+
+## 🛠️ 修改说明
+1.  **翻译逻辑增强**：优化了 `markdown_parser.py`，解决了 Markdown 翻译后结构混乱、公式丢失的问题。
+2.  **公式保护机制**：引入了占位符保护，确保 LaTeX 公式在翻译过程中不被损坏。
+3.  **Windows 端口自适应**：启动脚本会自动检测并避开已被占用的端口。
+
+---
+
+## ⚠️ 开发注意
+如果你修改了代码包以外的其他第三方库，或者增加了新的二进制依赖，请记得更新 `.gitignore` 或联系维护者。
