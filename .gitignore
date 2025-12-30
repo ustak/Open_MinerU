@@ -57,3 +57,5 @@
 /.vscode/**
 **/__pycache__/**
 .ipynb_checkpoints/**
+
+!/markitdown_gui.py
