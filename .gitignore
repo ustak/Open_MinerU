@@ -24,7 +24,7 @@
 /PY310/Lib/*
 !/PY310/Lib/site-packages/
 /PY310/Lib/site-packages/*
-!/PY310/Lib/site-packages/mineru/
+# 关键：精准放行 mineru 文件夹及其内部所有子文件夹
 !/PY310/Lib/site-packages/mineru/**
 
 # 4. 【额外代码白名单】
