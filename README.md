@@ -1,5 +1,7 @@
 # MinerU 2.6.6 Windows 优化版 (一键启动版)
 
+本项目主页：[https://github.com/ustak/Open_MinerU](https://github.com/ustak/Open_MinerU)
+
 本项目是基于 [OpenDataLab/MinerU](https://github.com/opendatalab/MinerU) 的深度优化版本，专为 Windows 环境设计。我们集成了 Python 嵌入式运行环境，并针对 PDF 解析和翻译逻辑进行了核心改进。
 
 > [!IMPORTANT]
@@ -90,4 +92,4 @@
 
 ## ⚠️ 贡献与反馈
 
-本项目仅供学习与技术交流。如有任何改进建议或 Bug 反馈，请提交 Issue。针对模型本身的问题，请直接咨询原作者。
+本项目仅供学习与技术交流。如有任何改进建议或 Bug 反馈，请在 [本仓库提交 Issue](https://github.com/ustak/Open_MinerU/issues)。针对模型本身的问题，请直接咨询原作者。
