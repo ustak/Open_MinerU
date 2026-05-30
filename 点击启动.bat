@@ -8,7 +8,13 @@ SET MINERU_GRADIO_TEMP_DIR=.\Gradio_Temp
 SET GRADIO_TEMP_DIR=.\Gradio_Temp
 SET GRADIO_UPLOAD_DIR=.\Gradio_Temp
 
-set mineru_gradio_port=8081
+set HTTP_PROXY=
+set HTTPS_PROXY=
+set http_proxy=
+set https_proxy=
+set NO_PROXY=127.0.0.1,localhost,::1
+
+set mineru_gradio_port=7860
 set max_attempts=10
 set attempt=0
 
