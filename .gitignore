@@ -17,6 +17,10 @@
 !/README.md
 !/LICENSE
 
+# -- 文档目录 --
+!/docs/
+!/docs/**
+
 # -- 重点：只同步你修改过的 mineru 核心代码包 --
 !/PY310/
 /PY310/*
