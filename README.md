@@ -1,5 +1,14 @@
 # MinerU 2.6.6 Windows 优化版 (一键启动版)
 
+## 版本信息
+
+| 组件 | 版本 |
+| :--- | :--- |
+| MinerU | 2.6.6 |
+| 配置文件 (config_version) | 1.3.1 |
+| Pipeline 模型 (PDF-Extract-Kit) | 1.0 |
+| VLM 模型 (MinerU2.5) | 2509-1.2B |
+
 本项目主页：[https://github.com/ustak/Open_MinerU](https://github.com/ustak/Open_MinerU)
 
 本项目是基于 [OpenDataLab/MinerU](https://github.com/opendatalab/MinerU) 的深度优化版本，专为 Windows 环境设计。我们集成了 Python 嵌入式运行环境，并针对 PDF 解析和翻译逻辑进行了核心改进。
