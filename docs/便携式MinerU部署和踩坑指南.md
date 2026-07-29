@@ -333,7 +333,7 @@ echo URL: http://127.0.0.1:7860
 echo Backend: lmdeploy turbomind
 echo.
 
-"%PY_DIR%\Scripts\mineru-gradio.exe" --server-name 127.0.0.1 --server-port 7860
+"%PY_DIR%\Scripts\mineru-gradio.exe" --server-name 127.0.0.1 --server-port 7860 --max-convert-pages 9999
 pause
 ```
 
@@ -341,6 +341,25 @@ pause
 - 清除代理设置，避免 localhost 访问问题
 - 设置 `MINERU_MODEL_SOURCE=local` 使用本地模型
 - 如果没有 CUDA Toolkit，添加 `set "MINERU_LMDEPLOY_BACKEND=pytorch"`
+
+**修改「最大转换页数」上限**：
+
+WebUI 中的「最大转换页数」滑块上限由启动参数 `--max-convert-pages` 决定，**默认值 1000**。这是官方在 CLI/WebUI 提交层设置的默认护栏（用于避免一次性提交超大任务导致内存/显存溢出），**不是**底层解析引擎的能力上限——真正的推理引擎（vllm/lmdeploy）并不感知这个限制，API 层的 `end_page_id` 默认是 99999。
+
+如果文档超过 1000 页（例如 4000 多页），只需在启动命令后追加该参数并把数值调大，如上面的 `--max-convert-pages 9999`：
+
+- 修改后**重启 WebUI**，「最大转换页数」滑块的最大值和默认值都会变成你设定的数值（如 9999），可直接拖到顶一次性转换整本文档。
+- 即使设定的数值大于文档实际页数也**不会报错**，API 会自动把结束页裁到真实页数。
+- **识别精度不受影响**：MinerU 是逐页独立识别的，单页质量与批次大小无关；放大上限不会降低识别精度。真正的风险是**稳定性**——超大任务可能因内存/显存不足而整任务失败（官方建议约 600 页需准备约 32G 可用内存），WebUI 还会把整本 Markdown + 预览 PDF 塞进浏览器标签页导致卡顿甚至崩溃。
+- 若机器内存/显存有限、担心中途失败，推荐改用命令行分段处理（WebUI 不能设起始页，只能从第 0 页起设上限）：
+
+  ```bash
+  PY312\Scripts\mineru.exe -p input.pdf -o output --start 0 --end 999
+  PY312\Scripts\mineru.exe -p input.pdf -o output --start 1000 --end 1999
+  # ……依此类推，每批几百页通常较稳
+  ```
+
+  也可在启动前设置环境变量降低 OOM 风险：`set "MINERU_VIRTUAL_VRAM_SIZE=10"`、`set "MINERU_PDF_RENDER_TIMEOUT=1800"`。
 
 ### 其他启动方式
 
@@ -471,6 +490,14 @@ PY312\python.exe -m pip install --no-cache-dir -e MinerU
 1. 目标电脑有 NVIDIA GPU
 2. 安装了对应的 CUDA 驱动
 3. 如果使用 turbomind 后端，需要安装 CUDA Toolkit
+
+### Q7: WebUI 的「最大转换页数」为什么是 1000？想转更大的文档怎么办？
+
+默认 1000 是官方在 `--max-convert-pages` 参数上设的默认值，属于 CLI/WebUI 提交层的护栏，不是引擎能力上限。如需转换超过 1000 页的文档：
+
+1. 编辑 `scripts/2_start_mineru.bat`，在 `mineru-gradio.exe` 启动命令后追加 `--max-convert-pages <数值>`（例如 `--max-convert-pages 9999`）。
+2. 重启 WebUI，滑块上限与默认值即变为该数值，可直接拖到顶一次性转换整本文档。
+3. 精度不受放大上限影响；但超大任务有内存/显存溢出导致整任务失败的风险。若机器配置有限，建议用命令行 `--start/--end` 分段处理（详见第 6 节说明）。
 
 ---
 
